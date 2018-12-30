@@ -26,9 +26,20 @@ class GPIOMonitoring():
     """
     def __init__(self, channel):
         """
-        Initialize GPIO to be monitor
-        :param: channel: pin number we will monitor
-        :return:
+        To monitor GPIO, we need to setup GPIO in ingress mode (GPIO.IN), after
+        that, it can be changed to egress (GPIO.OUT) but it can't be initialize
+        at GPIO.OUT.
+
+        We also use BCM notation (see: https://fr.pinout.xyz/pinout/pin29_gpio5)
+        instead of physical notation as BCM is used by sysfs and it will be easiest
+        to test code with commands:
+        pi@raspi:~$ cd /sys/class/gpio
+        pi@raspi:gpio$ echo out > gpio*id*/direction
+        pi@raspi:gpio$ echo 1 > gpio*id*/value
+        pi@raspi:gpio$ sleep 20
+        pi@raspi:gpio$ echo 0 > gpio*id*/value
+
+        where *id* is the channe we monitor.
         """
         self.channel = channel
         self.name = 'gpio{}'.format(self.channel)
@@ -52,32 +63,27 @@ class GPIOMonitoring():
 
     def monitor(self):
         """
-        Monitor will return the current value of channel when it will change
+        Monitor will return the current value of channel when it will change.
+
+        add_event_detect will create a thread to follow GPIO status modification,
+        GPIO_BOTH means that RISING *and* FAILING will trig thread
+        add_event_callback is (or are) function(s) called when a event is detected,
+        the callback will be call with *channel* as argument
         """
         print('Add event detection for gpio {}'.format(self.channel))
         GPIO.add_event_detect(self.channel, GPIO.BOTH)
-        GPIO.add_event_callback(self.channel, self.callback_state)
+        GPIO.add_event_callback(self.channel, self.state)
 
-    def state(self):
+    def state(self, channel=None):
         """
-        Monitor will return the current value of channel when it will change
+        We will modify GPIOS_CURRENT_STATE. As this variable will also be modify by
+        callback thread we need to lock access before writing in it.
         :return: GPIO status
         """
         with GPIOS_LOCK:
             GPIOS_CURRENT_STATE[self.name] = GPIO.input(self.channel)
         print('gpio {} state is {}'.format(self.channel, GPIO.input(self.channel)))
         return GPIO.input(self.channel)
-
-    def callback_state(self, channel):
-        """
-
-        :param channel:
-        :return:
-        """
-        with GPIOS_LOCK:
-            GPIOS_CURRENT_STATE[self.name] = GPIO.input(channel)
-        print('gpio {} state is {}'.format(self.channel, GPIO.input(channel)))
-        return GPIO.input(channel)
 
 
 class GPIOSMonitoring():  # pylint: disable=too-few-public-methods

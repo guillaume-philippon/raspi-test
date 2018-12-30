@@ -4,17 +4,20 @@ Some few test example for rasberry pi model 3 B+
 
 ## gpio-monitor
 
-gpio-monitor will monitor GPIO state. We will need to initialize GPIO function before monitoring. All code are ready
-for multiple GPIO monitoring but I have a weird issue with waiting_for_edge during runtime
+gpio-monitor will monitor GPIO state. If you want to monitor your pin,
+you need to start gpio-monitor before the real code as gpio-monitor need
+the pin to be in GPIO.IN mode which can crash your code.
 
+To install gpio_monitor
 ```
-Exception in thread Thread-1:                                                                                                                                                                                                                 
-Traceback (most recent call last):                                                                                                                                                                                                            
-  File "/usr/lib/python3.5/threading.py", line 914, in _bootstrap_inner                                                                                                                                                                       
-    self.run()                                                                                                                                                                                                                                
-  File "/home/pi/raspi-test/examples/gpio_monitor/cli/display.py", line 36, in run                                                                                                                                                            
-    value = self.gpio.monitor()                                                                                                                                                                                                               
-  File "/home/pi/raspi-test/examples/gpio_monitor/gpio.py", line 31, in monitor                                                                                                                                                               
-    GPIO.wait_for_edge(self.channel, GPIO.BOTH)                                                                                                                                                                                               
-RuntimeError: Error waiting for edge
+pi@raspi:~ $ mkdir -p ~/.venv/gpio-monitor
+pi@raspi:~ $ python3 -m venv ~/.venv/gpio-monitor
+pi@raspi:~ $ source ~/.venv/gpio-monitor/bin/activate
+(gpio-monitor) pi@raspi:~ $ pip install -r requirements.txt
+```
+
+To launch gpio-monitor
+```
+(gpio-monitor) pi@raspi:~ $./gpio-monitor channel1 channel2 ...
+(gpio-monitor) pi@raspi:~ $./gpio-monitor -h
 ```

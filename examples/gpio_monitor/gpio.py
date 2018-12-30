@@ -4,6 +4,7 @@ This module manage GPIO interaction.
 We use RPi.GPIO (https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/) instead
 of gpiozero (https://gpiozero.readthedocs.io/en/stable/) as we have low level access
 """
+from collections import deque
 from threading import RLock
 import RPi.GPIO as GPIO
 
@@ -68,6 +69,13 @@ class GPIOSMonitoring():
         """
         Initialize GPIOS
         """
+        print('Initialize GPIOS')
         self.channels = list()
         for channel in channels:
-            self.channels.append(GPIOMonitoring(channel))
+            gpio = GPIOMonitoring(channel)
+            with GPIOS_LOCK:
+                GPIOS_CURRENT_STATE[gpio.name] = gpio.state()
+                GPIOS_HISTORY[gpio.name] = deque([GPIOS_CURRENT_STATE[gpio.name]] * GPIOS_WINDOW_SIZE)
+                print('GPIOS_CURRENT_STATE: {}'.format(GPIOS_CURRENT_STATE))
+                print('GPIOS_HISTORY: {}'.format(GPIOS_HISTORY))
+            self.channels.append(gpio)

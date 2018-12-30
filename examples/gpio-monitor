@@ -6,7 +6,7 @@ learning how to manipulate gpio through python3.
 We will use some basic python module to have more versatility (as argparse) but we will embeded
 it on sub-module so it will not interfer with basic GPIO command.
 """
-from gpio_monitor.cli import config as cfg, display
+from gpio_monitor.cli import config as cfg, display as dsp
 from gpio_monitor.gpio import GPIOSMonitoring
 
 
@@ -19,7 +19,8 @@ def run():
     print('Configuration {}'.format(config.display()))
 
     channels = GPIOSMonitoring(config.config['gpio'])
-    pass
+    display = dsp.Display(channels)
+    display.draw()
 
 
 if __name__ == '__main__':

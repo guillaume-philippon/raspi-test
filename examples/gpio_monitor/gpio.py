@@ -35,6 +35,11 @@ class GPIOMonitoring():
         print('Initialize gpio {}'.format(self.channel))
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.channel, GPIO.IN)
+        with GPIOS_LOCK:
+            GPIOS_CURRENT_STATE[self.name] = self.state()
+            GPIOS_HISTORY[self.name] = deque([GPIOS_CURRENT_STATE[self.name]] * GPIOS_WINDOW_SIZE)
+            print('GPIOS_CURRENT_STATE: {}'.format(GPIOS_CURRENT_STATE))
+            print('GPIOS_HISTORY: {}'.format(GPIOS_HISTORY))
         self.monitor()
 
     def __del__(self):
@@ -51,24 +56,27 @@ class GPIOMonitoring():
         """
         print('Add event detection for gpio {}'.format(self.channel))
         GPIO.add_event_detect(self.channel, GPIO.BOTH)
-        GPIO.add_event_callback(self.channel, GPIOMonitoring.callback_state)
+        GPIO.add_event_callback(self.channel, self.callback_state)
 
     def state(self):
         """
         Monitor will return the current value of channel when it will change
         :return: GPIO status
         """
+        with GPIOS_LOCK:
+            GPIOS_CURRENT_STATE[self.name] = GPIO.input(self.channel)
         print('gpio {} state is {}'.format(self.channel, GPIO.input(self.channel)))
         return GPIO.input(self.channel)
 
-    @staticmethod
-    def callback_state(channel):
+    def callback_state(self, channel):
         """
 
         :param channel:
         :return:
         """
-        print('gpio {} state is {}'.format(self.channel, GPIO.input(self.channel)))
+        with GPIOS_LOCK:
+            GPIOS_CURRENT_STATE[self.name] = GPIO.input(channel)
+        print('gpio {} state is {}'.format(self.channel, GPIO.input(channel)))
         return GPIO.input(channel)
 
 
@@ -84,9 +92,4 @@ class GPIOSMonitoring():
         self.channels = list()
         for channel in channels:
             gpio = GPIOMonitoring(channel)
-            with GPIOS_LOCK:
-                GPIOS_CURRENT_STATE[gpio.name] = gpio.state()
-                GPIOS_HISTORY[gpio.name] = deque([GPIOS_CURRENT_STATE[gpio.name]] * GPIOS_WINDOW_SIZE)
-                print('GPIOS_CURRENT_STATE: {}'.format(GPIOS_CURRENT_STATE))
-                print('GPIOS_HISTORY: {}'.format(GPIOS_HISTORY))
             self.channels.append(gpio)

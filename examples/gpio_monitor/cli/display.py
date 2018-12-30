@@ -3,7 +3,7 @@ This module will define Display class that will be used to
 display output on screen
 """
 from collections import deque
-from threading import Thread, RLock
+from threading import RLock
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -14,9 +14,9 @@ GPIO_HISTORY = dict()  # Historic value for GPIO
 WINDOW_SIZE = 400  # Number of even we will keep
 
 
-class Display(Thread):
+class Display():
     """
-    :desc: Display is a sub-class of Thread. It will monitor one specific pin (channel)
+    Display is a sub-class of Thread. It will monitor one specific pin (channel)
     """
     def __init__(self, gpio):
         """
@@ -31,7 +31,7 @@ class Display(Thread):
 
     def run(self):
         """
-        run method is the method that will be started when we launch a thread
+        Start method is the method that will be started when we launch a thread
         """
         while True:
             value = self.gpio.monitor()

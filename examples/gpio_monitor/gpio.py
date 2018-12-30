@@ -1,8 +1,9 @@
 """
-This module manage GPIO interaction
+This module manage GPIO interaction.
+
+We use RPi.GPIO (https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/) instead
+of gpiozero (https://gpiozero.readthedocs.io/en/stable/) as we have low level access
 """
-# We use RPi.GPIO (https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/) instead
-# of gpiozero (https://gpiozero.readthedocs.io/en/stable/) as we have low level access
 import RPi.GPIO as GPIO
 
 
@@ -12,8 +13,9 @@ class Gpio:
     """
     def __init__(self, channel):
         """
-        :desc: init function prepare GPIO to be monitor
-        :channel: pin number we will monitor
+        Initialize GPIO to be monitor
+        :param: channel: pin number we will monitor
+        :return:
         """
         self.channel = channel
         self.name = 'gpio{}'.format(self.channel)
@@ -21,17 +23,22 @@ class Gpio:
         GPIO.setup(self.channel, GPIO.IN)
 
     def __del__(self):
+        """
+        Clear all GPIO monitoring
+        """
+        GPIO.remove_event_detect(self.channel)
         GPIO.cleanup(self.channel)
 
     def monitor(self):
         """
-        :desc: monitor will return the current value of channel when it will change
+        Monitor will return the current value of channel when it will change
         """
-        GPIO.wait_for_edge(self.channel, GPIO.BOTH)
-        return self.state()
+        GPIO.add_event_detect(self.channel, GPIO.BOTH)
+        GPIO.add_event_callback(self.channel, self.state)
 
     def state(self):
         """
-        :desc: monitor will return the current value of channel when it will change
+        Monitor will return the current value of channel when it will change
+        :return: GPIO status
         """
         return GPIO.input(self.channel)

@@ -28,6 +28,7 @@ class Display():
         with GPIOS_LOCK:
             for channel in GPIOS_CURRENT_STATE:
                 self.axe.plot(GPIOS_HISTORY[channel], label=channel)
+                self.axe.legend()
         image = animation.FuncAnimation(self.figure,
                                         self.redraw,
                                         interval=1000,
@@ -48,36 +49,3 @@ class Display():
                 GPIOS_HISTORY[channel].pop()
                 output = output + ()
         return output
-
-# def plot():
-#     """
-#     We will use matplotlib w/ animation to render the output. As I m not confident w/
-#     matplotblib that part could be not easly readeable.
-#     """
-#     figure = plt.figure()
-#     plots = dict()
-#     axe = figure.add_subplot(111)
-#     axe.set_ylim(-0.1, 1.1)
-#     with LOCK:
-#         for gpio in GPIO_CURRENT_STATE:
-#             plots[gpio], = axe.plot(GPIO_HISTORY[gpio], label=gpio)
-#     plt.legend()
-#     ani = animation.FuncAnimation(figure, plot_update,  # pylint: disable=unused-variable
-#                                   fargs=(plots,),
-#                                   interval=1000, blit=True)
-#     plt.show()
-#
-#
-# def plot_update(frame, plots):  # pylint: disable=unused-argument
-#     """
-#     Handler to update plot
-#     """
-#     ret = ()
-#     with LOCK:
-#         for gpio in GPIO_CURRENT_STATE:
-#             print(plots)
-#             GPIO_HISTORY[gpio].appendleft(GPIO_CURRENT_STATE[gpio])
-#             GPIO_HISTORY[gpio].pop()
-#             plots[gpio].set_ydata(GPIO_HISTORY[gpio])
-#             ret = ret + (plots[gpio],)
-#     return ret

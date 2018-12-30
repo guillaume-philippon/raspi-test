@@ -15,12 +15,22 @@ class Gpio:
         :channel: pin number we will monitor
         """
         self.channel = channel
+        self.name = 'gpio{}'.format(self.channel)
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.channel, GPIO.gpio_function(self.channel))
+        GPIO.setup(self.channel, GPIO.IN)
+
+    def __del__(self):
+        GPIO.cleanup(self.channel)
 
     def monitor(self):
         """
         :desc: monitor will return the current value of channel when it will change
         """
         GPIO.wait_for_edge(self.channel, GPIO.BOTH)
+        return self.state()
+
+    def state(self):
+        """
+        :desc: monitor will return the current value of channel when it will change
+        """
         return GPIO.input(self.channel)

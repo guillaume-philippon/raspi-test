@@ -35,6 +35,7 @@ class GPIOMonitoring():
         print('Initialize gpio {}'.format(self.channel))
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.channel, GPIO.IN)
+        self.monitor()
 
     def __del__(self):
         """

@@ -21,7 +21,5 @@ for gpio in gpios:
 
 for thread in displays:
     thread.start()
-#for thread in displays:
-#    thread.join()
 
 display.plot()

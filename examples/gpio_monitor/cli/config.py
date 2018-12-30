@@ -6,7 +6,8 @@ For more information about argparse, see https://docs.python.org/3/library/argpa
 """
 import argparse
 
-class Config: # pylint: disable=too-few-public-methods
+
+class Config:  # pylint: disable=too-few-public-methods
     """
     Config class will be use to store configuration give by user
     """
@@ -17,7 +18,7 @@ class Config: # pylint: disable=too-few-public-methods
         # We build argument parser
         # Usage: $0 GPIO ...
         parser = argparse.ArgumentParser(description='monitor some GPIO from Rasberry Pi')
-        parser.add_argument('gpio', metavar='GPIO', type=int, # nargs='+',
+        parser.add_argument('gpio', metavar='GPIO', type=int,  # nargs='+',
                             help='list of GPIO we want monitor')
         options = parser.parse_args()
 

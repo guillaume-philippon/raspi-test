@@ -5,6 +5,7 @@ This module manage GPIO interaction
 # of gpiozero (https://gpiozero.readthedocs.io/en/stable/) as we have low level access
 import RPi.GPIO as GPIO
 
+
 class Gpio:
     """
     Gpio class will manage interaction between GPIO and the rest of the code

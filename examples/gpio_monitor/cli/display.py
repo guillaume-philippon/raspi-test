@@ -8,10 +8,11 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 # Some global variable
-LOCK = RLock() # A lock to control Thread acces to variables
-GPIO_CURRENT_STATE = dict() # Current value for GPIO
-GPIO_HISTORY = dict() # Historic value for GPIO
-WINDOW_SIZE = 400 # Number of even we will keep
+LOCK = RLock()  # A lock to control Thread acces to variables
+GPIO_CURRENT_STATE = dict()  # Current value for GPIO
+GPIO_HISTORY = dict()  # Historic value for GPIO
+WINDOW_SIZE = 400  # Number of even we will keep
+
 
 class Display(Thread):
     """
@@ -38,6 +39,7 @@ class Display(Thread):
                 GPIO_CURRENT_STATE[self.gpio.name] = value
                 print("new value for {}: {}".format(self.gpio.name, value))
 
+
 def plot():
     """
     We will use matplotlib w/ animation to render the output. As I m not confident w/
@@ -51,11 +53,13 @@ def plot():
         for gpio in GPIO_CURRENT_STATE:
             plots[gpio], = axe.plot(GPIO_HISTORY[gpio], label=gpio)
     plt.legend()
-    ani = animation.FuncAnimation(figure, plot_update, fargs=(plots,), # pylint: disable=unused-variable
+    ani = animation.FuncAnimation(figure, plot_update,  # pylint: disable=unused-variable
+                                  fargs=(plots,),
                                   interval=1000, blit=True)
     plt.show()
 
-def plot_update(frame, plots): # pylint: disable=unused-argument
+
+def plot_update(frame, plots):  # pylint: disable=unused-argument
     """
     Handler to update plot
     """

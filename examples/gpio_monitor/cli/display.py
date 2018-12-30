@@ -2,7 +2,6 @@
 This module will define Display class that will be used to
 display output on screen
 """
-from collections import deque
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from gpio_monitor.gpio import GPIOS_LOCK, GPIOS_CURRENT_STATE, GPIOS_HISTORY
@@ -12,7 +11,7 @@ class Display():
     """
     This class will create a matplotlib graph animated
     """
-    def __init__(self, channels):
+    def __init__(self):
         """
         Initialize display class
         """
@@ -25,18 +24,19 @@ class Display():
 
     def draw(self):
         """
+        Will draw plot and start animation
         """
         with GPIOS_LOCK:
             for channel in GPIOS_CURRENT_STATE:
                 self.line[channel], = self.axe.plot(GPIOS_HISTORY[channel], label=channel)
                 self.axe.legend()
-        image = animation.FuncAnimation(self.figure,
+        image = animation.FuncAnimation(self.figure,  # pylint: disable=unused-variable
                                         self.redraw,
                                         interval=1000,
                                         blit=True)
         plt.show()
 
-    def redraw(self, frame):
+    def redraw(self, frame):  # pylint: disable=unused-argument
         """
 
         :param frame:

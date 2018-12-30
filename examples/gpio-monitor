@@ -19,7 +19,7 @@ def run():
     print('Configuration {}'.format(config.display()))
 
     channels = GPIOSMonitoring(config.config['gpio'])
-    display = dsp.Display(channels)
+    display = dsp.Display()
     display.draw()
 
 

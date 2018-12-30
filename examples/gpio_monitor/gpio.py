@@ -6,7 +6,7 @@ of gpiozero (https://gpiozero.readthedocs.io/en/stable/) as we have low level ac
 """
 from collections import deque
 from threading import RLock
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO  # pylint: disable=import-error
 
 
 # We define some global variable to share information
@@ -80,7 +80,7 @@ class GPIOMonitoring():
         return GPIO.input(channel)
 
 
-class GPIOSMonitoring():
+class GPIOSMonitoring():  # pylint: disable=too-few-public-methods
     """
     We store information about all GPIOS we want to monitor
     """

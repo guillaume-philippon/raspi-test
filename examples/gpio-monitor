@@ -6,7 +6,7 @@ learning how to manipulate gpio through python3.
 We will use some basic python module to have more versatility (as argparse) but we will embeded
 it on sub-module so it will not interfer with basic GPIO command.
 """
-from gpio_monitor.cli import config, display
+from gpio_monitor.cli import config as cfg, display
 from gpio_monitor.gpio import GPIOSMonitoring
 
 
@@ -15,7 +15,7 @@ def run():
     Define run function that will be started
     """
     print('run gpio-monitor')
-    config = config.Config()
+    config = cfg.Config()
     print('Configuration {}'.format(config.display()))
 
     channels = GPIOSMonitoring(config.config['gpio'])

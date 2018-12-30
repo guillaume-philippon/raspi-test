@@ -20,6 +20,7 @@ class Display():
         axe.set_ylim(-0.02, 1.02)
         self.figure = figure
         self.axe = axe
+        self.line = dict()
         plt.legend()
 
     def draw(self):
@@ -27,7 +28,7 @@ class Display():
         """
         with GPIOS_LOCK:
             for channel in GPIOS_CURRENT_STATE:
-                self.axe.plot(GPIOS_HISTORY[channel], label=channel)
+                self.line[channel], = self.axe.plot(GPIOS_HISTORY[channel], label=channel)
                 self.axe.legend()
         image = animation.FuncAnimation(self.figure,
                                         self.redraw,
@@ -35,8 +36,7 @@ class Display():
                                         blit=True)
         plt.show()
 
-    @staticmethod
-    def redraw(frame):
+    def redraw(self, frame):
         """
 
         :param frame:
@@ -47,5 +47,6 @@ class Display():
             for channel in GPIOS_CURRENT_STATE:
                 GPIOS_HISTORY[channel].appendleft(GPIOS_CURRENT_STATE[channel])
                 GPIOS_HISTORY[channel].pop()
-                output = output + ()
+                self.line[channel].set_ydata(GPIOS_HISTORY[channel])
+                output = output + (self.line[channel], )
         return output

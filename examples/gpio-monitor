@@ -20,6 +20,6 @@ for gpio in gpios:
     displays.append(display.Display(gpio))
 
 for thread in displays:
-    thread.start()
+    thread.run()
 
 display.plot()

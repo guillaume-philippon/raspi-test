@@ -68,6 +68,7 @@ class GPIOMonitoring():
         :param channel:
         :return:
         """
+        print('gpio {} state is {}'.format(self.channel, GPIO.input(self.channel)))
         return GPIO.input(channel)
 
 

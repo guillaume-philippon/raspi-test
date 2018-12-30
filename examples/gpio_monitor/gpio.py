@@ -71,7 +71,3 @@ class GPIOSMonitoring():
         self.channels = list()
         for channel in channels:
             self.channels.append(GPIOMonitoring(channel))
-
-    def __del__(self):
-        for channel in self.channels:
-            channel.__del__()

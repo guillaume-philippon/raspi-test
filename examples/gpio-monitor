@@ -11,15 +11,17 @@ from gpio_monitor.gpio import Gpio
 
 CONFIG = config.Config()
 
+print('Configuration {}'.format(CONFIG.display()))
+
 gpios = list()
 for gpio in CONFIG.config['gpio']:
     gpios.append(Gpio(gpio))
 
-displays = list()
-for gpio in gpios:
-    displays.append(display.Display(gpio))
+#displays = list()
+#for gpio in gpios:
+#    displays.append(display.Display(gpio))
 
-for thread in displays:
-    thread.run()
+#for thread in displays:
+#    thread.run()
 
-display.plot()
+#display.plot()

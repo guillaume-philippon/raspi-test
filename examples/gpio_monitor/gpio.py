@@ -53,7 +53,7 @@ class GPIOMonitoring():
         GPIO.add_event_detect(self.channel, GPIO.BOTH)
         GPIO.add_event_callback(self.channel, self.state)
 
-    def state(self):
+    def state(self, channel):
         """
         Monitor will return the current value of channel when it will change
         :return: GPIO status

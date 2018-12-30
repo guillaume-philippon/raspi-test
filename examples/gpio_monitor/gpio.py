@@ -33,11 +33,11 @@ class GPIOMonitoring():
         We also use BCM notation (see: https://fr.pinout.xyz/pinout/pin29_gpio5)
         instead of physical notation as BCM is used by sysfs and it will be easiest
         to test code with commands:
-        pi@raspi:~$ cd /sys/class/gpio
-        pi@raspi:gpio$ echo out > gpio*id*/direction
-        pi@raspi:gpio$ echo 1 > gpio*id*/value
-        pi@raspi:gpio$ sleep 20
-        pi@raspi:gpio$ echo 0 > gpio*id*/value
+        pi@raspi:~ $ cd /sys/class/gpio
+        pi@raspi:/sys/class/gpio $ echo out > gpio*id*/direction
+        pi@raspi:/sys/class/gpio $ echo 1 > gpio*id*/value
+        pi@raspi:/sys/class/gpio $ sleep 20
+        pi@raspi:/sys/class/gpio $ echo 0 > gpio*id*/value
 
         where *id* is the channe we monitor.
         """

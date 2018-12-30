@@ -7,21 +7,20 @@ We will use some basic python module to have more versatility (as argparse) but 
 it on sub-module so it will not interfer with basic GPIO command.
 """
 from gpio_monitor.cli import config, display
-from gpio_monitor.gpio import Gpio
+from gpio_monitor.gpio import GPIOSMonitoring
 
-CONFIG = config.Config()
 
-print('Configuration {}'.format(CONFIG.display()))
+def run():
+    """
+    Define run function that will be started
+    """
+    print('run gpio-monitor')
+    config = config.Config()
+    print('Configuration {}'.format(config.display()))
 
-gpios = list()
-for gpio in CONFIG.config['gpio']:
-    gpios.append(Gpio(gpio))
+    channels = GPIOSMonitoring(config.config['gpio'])
+    pass
 
-#displays = list()
-#for gpio in gpios:
-#    displays.append(display.Display(gpio))
 
-#for thread in displays:
-#    thread.run()
-
-#display.plot()
+if __name__ == '__main__':
+    run()

@@ -4,10 +4,22 @@ This module manage GPIO interaction.
 We use RPi.GPIO (https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/) instead
 of gpiozero (https://gpiozero.readthedocs.io/en/stable/) as we have low level access
 """
+from threading import RLock
 import RPi.GPIO as GPIO
 
 
-class Gpio:
+# We define some global variable to share information
+#  - GPIOS_LOCK: a thread locker
+#  - GPIO_CURRENT_STATE: to store current state of GPIO
+#  - GPIO_HISTORY: last "WINDOW_SIZE" GPIO state
+#  - WINDOW_SIZE: number of event we will store
+GPIOS_LOCK = RLock()
+GPIOS_CURRENT_STATE = dict()
+GPIOS_HISTORY = dict()
+GPIOS_WINDOW_SIZE = 1000
+
+
+class GPIOMonitoring():
     """
     Gpio class will manage interaction between GPIO and the rest of the code
     """
@@ -46,3 +58,20 @@ class Gpio:
         """
         print('gpio {} state is {}'.format(self.channel, GPIO.input(self.channel)))
         return GPIO.input(self.channel)
+
+
+class GPIOSMonitoring():
+    """
+    We store information about all GPIOS we want to monitor
+    """
+    def __init__(self, channels):
+        """
+        Initialize GPIOS
+        """
+        self.channels = list()
+        for channel in channels:
+            self.channels.append(GPIOMonitoring(channel))
+
+    def __del__(self):
+        for channel in self.channels:
+            channel.__del__()

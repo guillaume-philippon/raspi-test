@@ -19,6 +19,7 @@ class Gpio:
         """
         self.channel = channel
         self.name = 'gpio{}'.format(self.channel)
+        print('Initialize gpio {}'.format(self.channel))
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.channel, GPIO.IN)
 
@@ -26,6 +27,7 @@ class Gpio:
         """
         Clear all GPIO monitoring
         """
+        print('Destroy gpio {}'.format(self.channel))
         GPIO.remove_event_detect(self.channel)
         GPIO.cleanup(self.channel)
 
@@ -33,6 +35,7 @@ class Gpio:
         """
         Monitor will return the current value of channel when it will change
         """
+        print('Add event detection for gpio {}'.format(self.channel))
         GPIO.add_event_detect(self.channel, GPIO.BOTH)
         GPIO.add_event_callback(self.channel, self.state)
 
@@ -41,4 +44,5 @@ class Gpio:
         Monitor will return the current value of channel when it will change
         :return: GPIO status
         """
+        print('gpio {} state is {}'.format(self.channel, GPIO.input(self.channel)))
         return GPIO.input(self.channel)

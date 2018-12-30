@@ -22,7 +22,6 @@ class Display():
         """
         Initialise output
         """
-        Thread.__init__(self)
         self.gpio = gpio
         with LOCK:
             GPIO_CURRENT_STATE[gpio.name] = self.gpio.state()

@@ -31,6 +31,6 @@ class Config:  # pylint: disable=too-few-public-methods
         """
         display current configuration
         """
+        print('Configuration items')
         for item in self.config:
-            print('Configuration items')
             print('{}: {}'.format(item, self.config[item]))

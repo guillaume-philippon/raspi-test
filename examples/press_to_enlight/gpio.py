@@ -27,7 +27,6 @@ class GPIO():
         This method will just assign action to when_pressed and when_released Button class
         :return:
         """
-        self.button.when_pressed = self.led.on
-        self.button.when_released = self.led.off
+        self.button.when_pressed = self.led.toggle()
 
         pause()

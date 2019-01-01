@@ -12,7 +12,7 @@ def run():
     config = cfg.Config()
     print('Configuration {}'.format(config.display()))
 
-    gpio = GPIO(config)
+    gpio = GPIO(config.config)
     gpio.start()
 
 

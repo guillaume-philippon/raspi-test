@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+"""
+"""
+from press_to_enlight.cli import config as cfg
+
+
+def run():
+    """
+    Define run function that will be started
+    """
+    config = cfg.Config()
+    print('Configuration {}'.format(config.display()))
+
+
+if __name__ == '__main__':
+    run()

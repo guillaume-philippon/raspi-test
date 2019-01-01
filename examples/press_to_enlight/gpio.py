@@ -9,7 +9,7 @@ from signal import pause
 from gpiozero import LED, Button  # pylint: disable=import-error
 
 
-class GPIO():
+class GPIO():  # pylint: disable=too-few-public-methods
     """
     This is a short module to monitor press button and swith on/off LED
     """

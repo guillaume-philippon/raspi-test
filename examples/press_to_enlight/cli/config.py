@@ -16,9 +16,9 @@ class Config:  # pylint: disable=too-few-public-methods
         initialise class
         """
         parser = argparse.ArgumentParser(description='monitor some GPIO from Rasberry Pi')
-        parser.add_argument('led', metavar='led', type=int,
+        parser.add_argument('--led', metavar='led', type=int,
                             help='led pin number')
-        parser.add_argument('button', metavar='button', type=int,
+        parser.add_argument('--button', metavar='button', type=int,
                             help='button pin number')
         options = parser.parse_args()
 

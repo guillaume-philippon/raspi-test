@@ -5,7 +5,7 @@ This module will manage gpio.
 
 We will use gpiozero module (https://gpiozero.readthedocs.io/en/stable/) to manage it
 """
-from time import sleep
+from signal import pause
 from gpiozero import LED, Button  # pylint: disable=import-error
 
 
@@ -25,3 +25,5 @@ class GPIO():
     def start(self):
         self.button.when_pressed = self.led.on
         self.button.when_release = self.led.off
+
+        pause()
